@@ -2241,8 +2241,6 @@ pre > span.copy-code:hover {
     }.bg-img img {
         filter: blur(2px)
       }.box-shadow-wrapper {
-      padding: 10px;
-    }.box-shadow-wrapper {
       box-shadow: none !important;
     }body {
       cursor: default;
