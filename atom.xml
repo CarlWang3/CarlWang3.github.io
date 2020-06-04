@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://carlwang3.github.io</id>
     <title>Carl&apos;s Blog</title>
-    <updated>2020-06-04T14:38:50.710Z</updated>
+    <updated>2020-06-04T15:39:23.793Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://carlwang3.github.io"/>
     <link rel="self" href="https://carlwang3.github.io/atom.xml"/>
@@ -10,6 +10,26 @@
     <logo>https://carlwang3.github.io/images/avatar.png</logo>
     <icon>https://carlwang3.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Carl&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Markdown中使用html标签]]></title>
+        <id>https://carlwang3.github.io/post/markdown-zhong-shi-yong-html-biao-qian/</id>
+        <link href="https://carlwang3.github.io/post/markdown-zhong-shi-yong-html-biao-qian/">
+        </link>
+        <updated>2020-06-04T14:48:41.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="有时候我们会在笔记中使用一些html标签但是markdown中直接使用html标签会被解析为格式该怎么书写可以直接显示为html的标签呢">有时候,我们会在笔记中使用一些HTML标签,但是Markdown中直接使用html标签会被解析为格式.该怎么书写，可以直接显示为html的标签呢?</h3>
+<p><code>&lt;h1&gt;</code>这是一个标题<code>&lt;/h1&gt;</code><br>
+//其中的<code>&lt;h1&gt;这是一个标题&lt;/h1&gt;</code>总是会被解析为成html标签，而不是直接显示为html标签。</p>
+<h3 id="问题出现原因">问题出现原因：</h3>
+<p>Markdown支持html语法，所以会对相应的标签进行解析。</p>
+<h3 id="问题解决办法">问题解决办法：</h3>
+<pre><code>    1、使用引号把标签包起来
+                `&lt;h1&gt;这是一个标题&lt;/h1&gt;`
+    2、使用转义字符来表示相应的标签
+
+                &amp;lt;h1&amp;gt;这是一个标题&amp;lt;/h1&amp;gt;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[网站不允许复制文字？教你如何破解！！！]]></title>
         <id>https://carlwang3.github.io/post/wang-zhan-bu-yun-xu-fu-zhi-wen-zi-jiao-ni-ru-he-po-jie/</id>
@@ -134,8 +154,8 @@ var foo = 'bar';
 <li>项目3</li>
 </ol>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7272425"><label class="task-list-item-label" for="task-item-7272425"> 计划任务</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9068211"><label class="task-list-item-label" for="task-item-9068211"> 完成任务</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6866813"><label class="task-list-item-label" for="task-item-6866813"> 计划任务</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3769830"><label class="task-list-item-label" for="task-item-3769830"> 完成任务</label></li>
 </ul>
 <h2 id="创建一个表格">创建一个表格</h2>
 <p>一个简单的表格是这么创建的：</p>
@@ -520,6 +540,73 @@ Backspace	返回到设置主页。<br>
         </link>
         <updated>2020-02-13T05:18:58.000Z</updated>
         <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://carlwang3.github.io/post-images/1591280079177.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HTML 基础：创建一个输入框]]></title>
+        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-shu-ru-kuang/</id>
+        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-shu-ru-kuang/">
+        </link>
+        <updated>2020-02-01T01:47:59.000Z</updated>
+        <content type="html"><![CDATA[<p>创建一个form表单。</p>
+<p>input输入框可以让你轻松获得用户的输入。</p>
+<p>你可以像这样创建一个文本输入框：</p>
+<p><code>&lt;input type=&quot;text&quot;&gt;</code></p>
+<p>注意：input输入框是没有结束标记的。</p>
+<p>创建一个type属性为text的input输入框<br>
+<code>&lt;input type=&quot;text&quot;&gt;</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HTML 基础：创建一个有序列表]]></title>
+        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-you-xu-lie-biao/</id>
+        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-you-xu-lie-biao/">
+        </link>
+        <updated>2020-02-01T01:40:08.000Z</updated>
+        <content type="html"><![CDATA[<p>HTML 有一个特定的元素用于创建有序列表ordered lists（缩写 ol）。</p>
+<p>有序列表以<code>&lt;ol&gt;</code>开始，中间包含一个或多个<code>&lt;li&gt;</code>元素，最后以<code>&lt;/ol&gt;</code>结尾。</p>
+<p>例如:</p>
+<p><code>&lt;ol&gt;</code><br>
+<code>&lt;li&gt;加菲猫&lt;/li&gt;</code><br>
+<code>&lt;li&gt;哆啦A梦&lt;/li&gt;</code><br>
+<code>&lt;/ol&gt;</code><br>
+将会创建一个包含加菲猫和哆啦A梦的有序列表。<br>
+eg:</p>
+<ol>
+  <li>加菲猫</li>
+  <li>哆啦A梦</li>
+</ol>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HTML 基础：创建一个无序列表]]></title>
+        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-wu-xu-lie-biao/</id>
+        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-wu-xu-lie-biao/">
+        </link>
+        <updated>2020-02-01T01:31:49.000Z</updated>
+        <content type="html"><![CDATA[<p>HTML 有一个特定的元素用于创建无序列表unordered lists（缩写 ul）。</p>
+<p>无序列表以<code>&lt;ul&gt;</code>开始，中间包含一个或多个<code>&lt;li&gt;</code>元素，最后以<code>&lt;/ul&gt;</code>结尾。</p>
+<p>例如:</p>
+<p><code>&lt;ul&gt;</code><br>
+<code>&lt;li&gt;牛奶&lt;/li&gt;</code><br>
+<code>&lt;li&gt;奶酪&lt;/li&gt;</code><br>
+<code>&lt;/ul&gt;</code><br>
+将会创建一个包含牛奶和奶酪的无序列表。<br>
+eg:<ul></p>
+  <li>牛奶</li>
+  <li>奶酪</li>
+</ul>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HTML 基础：给图片添加链接]]></title>
+        <id>https://carlwang3.github.io/post/html-ji-chu-gei-tu-pian-tian-jia-lian-jie/</id>
+        <link href="https://carlwang3.github.io/post/html-ji-chu-gei-tu-pian-tian-jia-lian-jie/">
+        </link>
+        <updated>2020-01-31T14:33:14.000Z</updated>
+        <content type="html"><![CDATA[<p>你可以通过把元素嵌套进锚点里使其变成一个链接。</p>
+<p>把你的图片嵌套进锚点。举例如下：</p>
+<p><a href="#"><img src="xxx.jpg" alt="图片不见了"></a></p>
+<p>把锚点的href属性设置为#，就可以创建固定链接。</p>
+<p>当鼠标悬停在图片上时，鼠标的光标如果从箭头指针变成手形指针，那么此时图片就是一个链接了。</p>
 ]]></content>
     </entry>
 </feed>
