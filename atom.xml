@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://carlwang3.github.io</id>
     <title>Carl&apos;s Blog</title>
-    <updated>2020-06-04T15:39:23.793Z</updated>
+    <updated>2020-06-08T09:06:18.166Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://carlwang3.github.io"/>
     <link rel="self" href="https://carlwang3.github.io/atom.xml"/>
@@ -10,6 +10,474 @@
     <logo>https://carlwang3.github.io/images/avatar.png</logo>
     <icon>https://carlwang3.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Carl&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Mybatis环境搭建（前期准备2）]]></title>
+        <id>https://carlwang3.github.io/post/mybatis-huan-jing-da-jian-qian-qi-zhun-bei-2/</id>
+        <link href="https://carlwang3.github.io/post/mybatis-huan-jing-da-jian-qian-qi-zhun-bei-2/">
+        </link>
+        <updated>2020-06-08T06:45:07.000Z</updated>
+        <content type="html"><![CDATA[<p>3、在pom.xml内添加 Mybatis3.4.5 的坐标 <img src="https://carlwang3.github.io/post-images/1591598738479.png" alt="" loading="lazy"><br>
+4、创建user实体类，创建get、set方法</p>
+<pre><code>    import java.io.Serializable;
+    //User实体类
+    public class User implements Serializable  {
+        private int uid;
+        private String uname;
+        private String password;
+        private String phone;
+        private String email;
+        public int getUid() {
+            return uid;
+        }
+        public void setUid(int uid) {
+            this.uid = uid;
+        }
+        public String getUname() {
+            return uname;
+        }
+        public void setUname(String uname) {
+            this.uname = uname;
+        }
+        public String getPassword() {
+            return password;
+        }
+        public void setPassword(String password) {
+            this.password = password;
+        }
+        public String getPhone() {
+            return phone;
+        }
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+        public String getEmail() {
+            return email;
+        }
+        public void setEmail(String email) {
+            this.email = email;
+        }
+        @Override
+        public String toString() {
+            return &quot;User [uid=&quot; + uid + &quot;, uname=&quot; + uname + &quot;, password=&quot; + password + &quot;, phone=&quot; + phone + &quot;, email=&quot;
+                    + email + &quot;]&quot;;
+        }
+        
+        
+    }
+</code></pre>
+<p>5、创建userDao操作数据库的接口<br>
+package dao;</p>
+<pre><code>                import java.util.List;
+
+                import model.User;
+
+                public interface userDao {
+                    //	查询所有的数据
+                    List&lt;User&gt; findAll();
+                }
+</code></pre>
+<p>6、 编写 SqlMapConfig.xml 配置文件</p>
+<pre><code class="language-java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE configuration PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot; &gt;
+&lt;configuration&gt;
+    &lt;!-- 配置 mybatis 的环境 --&gt;
+    &lt;environments default=&quot;mysql&quot;&gt;   &lt;!-- 配置 mysql 的环境 --&gt;
+        &lt;environment id=&quot;mysql&quot;&gt;   
+            &lt;!-- 配置事务的类型 --&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;    
+            &lt;!-- 配置连接数据库的信息：用的是数据源(连接池) --&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot; /&gt;
+                &lt;property name=&quot;url&quot;
+                    value=&quot;jdbc:mysql://localhost:3306/ee50&quot; /&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot; /&gt;
+                &lt;property name=&quot;password&quot; value=&quot;1234&quot; /&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    &lt;!-- 告知 mybatis 映射配置的位置 --&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;dao/IUserDao.xml&quot; /&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt; 
+
+</code></pre>
+<p>7、 编写持久层接口的映射文件 IUserDao.xml</p>
+<pre><code class="language-java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot; &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot; &gt;
+&lt;mapper namespace=&quot;dao.IUserDao&quot;&gt;   &lt;!-- 配置查询所有操作 --&gt;
+&lt;select id=&quot;findAll&quot; resultType=&quot;model.User&quot;&gt; select * from user  &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h3 id="mybatis的环境搭建">mybatis的环境搭建</h3>
+<pre><code>    第一步  ：创建maven工程并导入坐标
+    第二步  ：创建实体类和Dao的接口
+    第三步  ：创建Mybatis的主配置文件   SqlMapConfig.xml
+    第四步  ：创建映射配置文件  IUserDao.xml
+</code></pre>
+<h2 id="环境搭建的注意事项">环境搭建的注意事项</h2>
+<pre><code>    第一个  ：创建 IUserDao.xml 和 IUserDao.java 时，名称是为了与之前所学知识保持一致。在Mybatis中他把持久层的操作接口名称和映射文件也叫做：Mapper，所以IUserDao和IUserMapper是一样的  
+    第二个  ：在项目中创建目录时和创建报是不一样的
+                    包在创建时com.xx.dao是三级目录
+                    目录在创建时com.xx.dao是一级目录
+    第三个  ：mybatis的映射配置文件的位置必须和dao接口的包结构相同
+    第四个  ：映射配置文件的mapper标签namespace属性取值必须是dao接口的全限定类名
+    第五个  ：映射配置文件的操作配置（select），id属性的取值必须是dao接口的方法名
+</code></pre>
+<h2 id="当我们遵从了第三四五点之后我们在开发中就无须在写dao的实现类">当我们遵从了第三四五点之后，我们在开发中就无须在写dao的实现类</h2>
+<p>8、  编写测试类</p>
+<pre><code class="language-java">import java.io.InputStream;
+import java.util.List;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import dao.userDao;
+import model.User;
+
+public class MybatisTest {
+	public static void main(String[] args) throws Exception {
+		// 1.读取配置文件
+		InputStream in = Resources.getResourceAsStream(&quot;SqlMapConfig.xml&quot;);
+		// 2.创建 SqlSessionFactory 的构建者对象
+		SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+		// 3.使用构建者创建工厂对象SqlSessionFactory
+		SqlSessionFactory factory = builder.build(in);
+		// 4.使用 SqlSessionFactory 生产 SqlSession 对象
+		SqlSession session = factory.openSession();
+		// 5.使用 SqlSession 创建 dao 接口的代理对象
+		userDao userDao = session.getMapper(userDao.class);
+		//6.使用代理对象执行查询所有方法  
+		List&lt;User&gt; users = userDao.findAll();
+		for (User user : users) {
+			System.out.println(user);
+		}
+		// 7.释放资源
+		session.close();
+		in.close();
+	}
+
+}
+</code></pre>
+<pre><code>    在从测试类中：
+                            第一步  ：读取配置文件
+                            第二步  ：创建SqlSessionFactory工厂
+                            第三步  ：创建SqlSession
+                            第四步  ：创建Dao接口的代理对象
+                            第五步  ：执行dao中的方法
+                            第六步  ：释放资源
+   注意事项  ：     不要忘记在映射配置中告知mybatis要封装到那个实体类中
+                             配置的方式：指定实体类的全限定类名                 
+</code></pre>
+<h2 id="mybatis基于注解的入门">mybatis基于注解的入门：</h2>
+<pre><code>                            把IUserDao.xml移除，在dao接口方法上使用@Select注解，并且指定SQL语句，同时需要在SqlMapConfig.xml的mapper配置时，使用class属性指定到dao接口的全限定类名。
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://carlwang3.github.io/post-images/1591607149918.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mybatis环境搭建（前期准备1）]]></title>
+        <id>https://carlwang3.github.io/post/mybatis-huan-jing-da-jian-qian-qi-zhun-bei/</id>
+        <link href="https://carlwang3.github.io/post/mybatis-huan-jing-da-jian-qian-qi-zhun-bei/">
+        </link>
+        <updated>2020-06-08T06:21:02.000Z</updated>
+        <content type="html"><![CDATA[<p>1、在eclipse中创建一个maven项目<br>
+<img src="https://carlwang3.github.io/post-images/1591597405453.png" alt="" loading="lazy"><br>
+<img src="https://carlwang3.github.io/post-images/1591597516369.png" alt="" loading="lazy"><br>
+<img src="https://carlwang3.github.io/post-images/1591597655372.png" alt="" loading="lazy"><br>
+创建成功<br>
+<img src="https://carlwang3.github.io/post-images/1591597735557.png" alt="" loading="lazy"></p>
+<p>2、  在Mysql中创建一个mybatis_blog的数据库，创建多个表、<br>
+以下是创建数据可的sql文件代码（直接在Mysql数据库运行即可）<br>
+/*<br>
+Navicat MySQL Data Transfer</p>
+<pre><code>                            Source Server         : Mybatis
+                            Source Server Type    : MySQL
+                            Source Server Version : 80015
+                            Source Host           : localhost:3306
+                            Source Schema         : mybatis_blog
+
+                            Target Server Type    : MySQL
+                            Target Server Version : 80015
+                            File Encoding         : 65001
+
+                            Date: 08/06/2020 14:19:35
+                            */
+
+                            SET NAMES utf8mb4;
+                            SET FOREIGN_KEY_CHECKS = 0;
+
+                            -- ----------------------------
+                            -- Table structure for admin
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `admin`;
+                            CREATE TABLE `admin`  (
+                            `adminid` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员id',
+                            `adminname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员姓名',
+                            `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员密码',
+                            `phone` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话号码',
+                            `email` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+                            `createdate` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建日期',
+                            PRIMARY KEY (`adminid`) USING BTREE
+                            ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Records of admin
+                            -- ----------------------------
+                            INSERT INTO `admin` VALUES (1, 'one', '666666', '123456789', NULL, NULL);
+
+                            -- ----------------------------
+                            -- Table structure for article
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `article`;
+                            CREATE TABLE `article`  (
+                            `aid` int(10) NOT NULL AUTO_INCREMENT COMMENT '文章id',
+                            `title` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章标题',
+                            `author` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章作者',
+                            `content` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章内容',
+                            `publishdate` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '发表日期',
+                            `type` int(10) NULL DEFAULT NULL COMMENT '文章类型编号',
+                            PRIMARY KEY (`aid`) USING BTREE
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Table structure for catelog
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `catelog`;
+                            CREATE TABLE `catelog`  (
+                            `gid` int(10) NOT NULL AUTO_INCREMENT COMMENT '文章类型id',
+                            `gname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章类型名称',
+                            `remark` varchar(218) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+                            PRIMARY KEY (`gid`) USING BTREE
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Table structure for comment
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `comment`;
+                            CREATE TABLE `comment`  (
+                            `cid` int(10) NOT NULL AUTO_INCREMENT COMMENT '评论id',
+                            `content` varchar(218) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+                            `contentdate` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评论日期',
+                            `aid` int(10) NULL DEFAULT NULL COMMENT '文章编号',
+                            `uid` int(10) NULL DEFAULT NULL COMMENT '用户编号',
+                            PRIMARY KEY (`cid`) USING BTREE,
+                            INDEX `cuid`(`uid`) USING BTREE,
+                            INDEX `caid`(`aid`) USING BTREE,
+                            CONSTRAINT `caid` FOREIGN KEY (`aid`) REFERENCES `article` (`aid`) ON DELETE SET NULL ON UPDATE SET NULL,
+                            CONSTRAINT `cuid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Table structure for message
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `message`;
+                            CREATE TABLE `message`  (
+                            `mid` int(10) NOT NULL AUTO_INCREMENT COMMENT '留言id',
+                            `content` varchar(218) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '留言内容',
+                            `date` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '留言发表日期',
+                            `uid` int(10) NULL DEFAULT NULL COMMENT '用户id',
+                            PRIMARY KEY (`mid`) USING BTREE,
+                            INDEX `uuid`(`uid`) USING BTREE,
+                            CONSTRAINT `uuid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Table structure for post
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `post`;
+                            CREATE TABLE `post`  (
+                            `pid` int(10) NOT NULL AUTO_INCREMENT COMMENT '公告id',
+                            `ptitle` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公告标题',
+                            `content` varchar(218) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公告内容',
+                            `author` int(10) NULL DEFAULT NULL COMMENT '公告作者',
+                            `publishdate` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '发表日期',
+                            PRIMARY KEY (`pid`) USING BTREE
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Table structure for user
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `user`;
+                            CREATE TABLE `user`  (
+                            `uid` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+                            `uname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户姓名',
+                            `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
+                            `phone` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话号码',
+                            `email` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+                            PRIMARY KEY (`uid`) USING BTREE
+                            ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            -- ----------------------------
+                            -- Records of user
+                            -- ----------------------------
+                            INSERT INTO `user` VALUES (1, '1', '1', '1', '1');
+                            INSERT INTO `user` VALUES (2, '2', '2', '2', '2');
+
+                            -- ----------------------------
+                            -- Table structure for zan
+                            -- ----------------------------
+                            DROP TABLE IF EXISTS `zan`;
+                            CREATE TABLE `zan`  (
+                            `zid` int(10) NOT NULL AUTO_INCREMENT COMMENT '点赞id',
+                            `total` int(10) NULL DEFAULT NULL COMMENT '点赞总数',
+                            `aid` int(10) NULL DEFAULT NULL COMMENT '文章编号',
+                            PRIMARY KEY (`zid`) USING BTREE,
+                            INDEX `zaid`(`aid`) USING BTREE,
+                            CONSTRAINT `zaid` FOREIGN KEY (`aid`) REFERENCES `article` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+                            ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+                            SET FOREIGN_KEY_CHECKS = 1;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[三层架构和SSM框架的对应关系]]></title>
+        <id>https://carlwang3.github.io/post/san-ceng-jia-gou-he-ssm-kuang-jia-de-dui-ying-guan-xi/</id>
+        <link href="https://carlwang3.github.io/post/san-ceng-jia-gou-he-ssm-kuang-jia-de-dui-ying-guan-xi/">
+        </link>
+        <updated>2020-06-08T03:11:46.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-什么是框架">1、什么是框架？</h1>
+<pre><code>    框架（Framework）是整个或部分系统的可重用设计，表现为一组抽象构件及构件实例间交互的方法；另一种定义认为，框架是可被应用开发者定制的应用骨架。前者是从应用方面而后者是从目的方面给出的定义。
+    简而言之，框架其实就是某种应用的半成品，就是一组组件，供你选用完成你自己的系统。简单说就是使用别人搭建好的舞台，你来做表演。而且，框架一般是成熟的，不断升级的软件。
+</code></pre>
+<h4 id="他是我们软件开发中的一套解决方案不同的框架解决的是不同的问题">他是我们软件开发中的一套解决方案，不同的框架解决的是不同的问题。</h4>
+<pre><code>    使用框架的好处：框架封装了很多的细节，是开发者可以使用极简的方式实现功能。大大提高开发效率。
+</code></pre>
+<h1 id="2-三层架构">2、三层架构</h1>
+<pre><code>    表现层：适用于展示数据。
+    业务层：是处理业务需求。
+    持久层：是和数据库交互的。
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://carlwang3.github.io/post-images/1591586911536.png" alt="" loading="lazy"></figure>
+<h1 id="3-持久层技术解决方案">3、持久层技术解决方案</h1>
+<pre><code>    JDBC技术：
+                    Connection
+                    PreparedStatement
+                    ResultSet
+    Spring的JdbcTemplate：
+                    Spring中对jdbc的简单封装
+    Apache的DBUtils：
+                    他和Spring的JdbcTemplate很像，也是对Jdbc的简单封装。                以上这些都不是框架
+                    JDBC是规范
+                    Spring的JDBCTemplate和Apache的JDBCUtils都只是工具类     
+</code></pre>
+<h1 id="4-jdbc回顾">4、 JDBC回顾</h1>
+<pre><code class="language-java">      public static void main(String[] args) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			// 加载数据库驱动
+			Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+			// 通过驱动管理类获取数据库链接
+			connection = DriverManager.getConnection(&quot;jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8&quot;,
+					&quot;ro ot&quot;, &quot;root&quot;);
+			// 定义 sql 语句 ?表示占位符
+			String sql = &quot;select * from user where username = ?&quot;;
+			// 获取预处理 statement
+			preparedStatement = connection.prepareStatement(sql);
+			// 设置参数，第一个参数为 sql 语句中参数的序号（从 1 开始），第二个参数为设置的 参数值
+			preparedStatement.setString(1, &quot;王五&quot;);
+			// 向数据库发出 sql 执行查询，查询出结果集
+			resultSet = preparedStatement.executeQuery();
+			// 遍历查询结果集
+			while (resultSet.next()) {
+				System.out.println(resultSet.getString(&quot;id&quot;) + &quot;   &quot; + resultSet.getString(&quot;username&quot;));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 释放资源
+			if (resultSet != null) {
+				try {
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+上边使用 jdbc 的原始方法（未经封装）实现了查询数据库表记录的操作。 
+</code></pre>
+<h1 id="5-jdbc-问题分析">5、jdbc 问题分析</h1>
+<pre><code>         1、数据库链接创建、释放频繁造成系统资源浪费从而影响系统性能，如果使用数据库链接池可解·决此问题。
+         2、Sql 语句在代码中硬编码，造成代码不易维护，实际应用 sql 变化的可能较大，sql 变动需要改变 java 代码。 
+         3、使用 preparedStatement 向占有位符号传参数存在硬编码，因为 sql 语句的 where 条件不一定，可能 多也可能少，修改 sql 还要修改代码，系统不易维护。 
+         4、对结果集解析存在硬编码（查询列名），sql 变化导致解析代码变化，系统不易维护，如果能将数据库记 录封装成 pojo 对象解析比较方便。 
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mybatis介绍]]></title>
+        <id>https://carlwang3.github.io/post/mybatis-ke-cheng-jie-shao/</id>
+        <link href="https://carlwang3.github.io/post/mybatis-ke-cheng-jie-shao/">
+        </link>
+        <updated>2020-06-08T02:56:51.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="mybatis框架">mybatis框架</h2>
+<pre><code>    mybatis入门
+            mybatis概述
+            mybatis 环境搭建
+            mybatis入门案例
+            自定义mybatis框架（主要目的是未来让大家了解mybatis中执行细节）
+    mybatis基本使用
+            mybatis的单表crud操作
+            mybatis的参数和返回值
+            mybatis的dao编写
+            mybatis配置的细节
+                        几个标签的使用
+    mybatis的深入和多表
+            mybatis的链接池
+            mybatis的事物控制及设计的方法
+            mybatis的多表查询
+                            多对一（一对多）
+                            多对多
+    mybatis的缓存和注解开发
+            mybatis中的加载时机（查询的时机                    
+            mybatis中的一级缓存和二级缓存
+            mybatis的注解开发
+                        单表CURD
+                        多表查询
+</code></pre>
+<h1 id="mybatis-框架概述">MyBatis 框架概述</h1>
+<pre><code>        mybatis是一个优秀的基于 java 的持久层框架，它内部封装了 jdbc，使开发者只需要关注 
+    sql语句本身， 而不需要花费精力去处理加载驱动、创建连接、创建 statement 等繁杂的过程。
+    mybatis通过xml 或注解的方式将要执行的各种statement配置起来，并通过java对象和
+    statement 中 sql 的动态参数进行映射生成最终执行的 sql 语句，最后由 mybatis 框架执行 
+    sql 并将结果映射为 java 对象并 返回。 采用 ORM 思想解决了实体和数据库映射的问题，对 
+    jdbc进行了封装，屏蔽了 jdbc api 底层访问细节，使我 们不用与 jdbc api 打交道，就可以
+    完成对数据库的持久化操作。 为了我们能够更好掌握框架运行的内部过程，并且有更好的体验，
+    下面我们将从自定义 Mybatis 框架开始来 学习框架。此时我们将会体验框架从无到有的过程体验，
+    也能够很好的综合前面阶段所学的基础。              
+</code></pre>
+<h1 id="从百度中mybatis-download可以下载最新的-mybatis-开发包">从百度中“mybatis download”可以下载最新的 Mybatis 开发包。</h1>
+<pre><code>    mybatis是一个持久层框架，用java编写的
+    他封装了jdbc操作的很多细节，使开发者只需要关注sql语句本身，则无需关注注册驱动，创建链接等繁杂过程
+   他使用了ORM思想实现了结果集的封装
+   ORM：
+            Object Relational Mapping 对象关系映射
+            简单的说就是吧数据库表和实体类及实体类的属性对应起来
+            让我们可以操作实体类就实现操作数据库表
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Markdown中使用html标签]]></title>
         <id>https://carlwang3.github.io/post/markdown-zhong-shi-yong-html-biao-qian/</id>
@@ -49,6 +517,13 @@
         <link href="https://carlwang3.github.io/post/shi-yong-markdown-bian-ji-qi/">
         </link>
         <updated>2020-06-04T12:26:34.000Z</updated>
+        <summary type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8markdown%E7%BC%96%E8%BE%91%E5%99%A8">欢迎使用Markdown编辑器</a></li>
+</ul>
+(这里写自定义目录标题)</p>
+<h1 id="欢迎使用markdown编辑器">欢迎使用Markdown编辑器</h1>
+<p>你好！ 这是你第一次使用 <strong>Markdown编辑器</strong> 所展示的欢迎页。如果你想学习如何使用Markdown编辑器, 可以仔细阅读这篇文章，了解一下Markdown的基本语法知识。</p>
+]]></summary>
         <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
 <li><a href="#%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8markdown%E7%BC%96%E8%BE%91%E5%99%A8">欢迎使用Markdown编辑器</a>
 <ul>
@@ -84,6 +559,7 @@
 (这里写自定义目录标题)</p>
 <h1 id="欢迎使用markdown编辑器">欢迎使用Markdown编辑器</h1>
 <p>你好！ 这是你第一次使用 <strong>Markdown编辑器</strong> 所展示的欢迎页。如果你想学习如何使用Markdown编辑器, 可以仔细阅读这篇文章，了解一下Markdown的基本语法知识。</p>
+<!-- more -->
 <h2 id="新的改变">新的改变</h2>
 <p>我们对Markdown编辑器进行了一些功能拓展与语法支持，除了标准的Markdown编辑器功能，我们增加了如下几点新功能，帮助你用它写博客：</p>
 <ol>
@@ -154,8 +630,8 @@ var foo = 'bar';
 <li>项目3</li>
 </ol>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6866813"><label class="task-list-item-label" for="task-item-6866813"> 计划任务</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3769830"><label class="task-list-item-label" for="task-item-3769830"> 完成任务</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3330777"><label class="task-list-item-label" for="task-item-3330777"> 计划任务</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5296071"><label class="task-list-item-label" for="task-item-5296071"> 完成任务</label></li>
 </ul>
 <h2 id="创建一个表格">创建一个表格</h2>
 <p>一个简单的表格是这么创建的：</p>
@@ -344,8 +820,192 @@ JavaScript的核心语法部分很精简，只包含两个部分：<br>
         <link href="https://carlwang3.github.io/post/windows-zhong-de-kuai-jie-jian/">
         </link>
         <updated>2020-02-20T11:05:06.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<h2 id="复制-粘贴及其他常规的键盘快捷方式">复制、粘贴及其他常规的键盘快捷方式</h2>
+        <summary type="html"><![CDATA[<h2 id="复制-粘贴及其他常规的键盘快捷方式">复制、粘贴及其他常规的键盘快捷方式</h2>
+<p>Ctrl + X	剪切选定项。<br>
+Ctrl + C（或 Ctrl + Insert）	复制选定项。<br>
+Ctrl + V（或 Shift + Insert）	粘贴选定项。<br>
+Ctrl + Z	撤消操作。<br>
+Alt + Tab	在打开的应用之间切换。<br>
+Alt + F4	关闭活动项，或者退出活动应用。<br>
+Windows 徽标键  + L	锁定你的电脑。<br>
+Windows 徽标键  + D	显示和隐藏桌面。<br>
+F2	重命名所选项目。<br>
+F3	在文件资源管理器中搜索文件或文件夹。<br>
+F4	在文件资源管理器中显示地址栏列表。<br>
+F5	刷新活动窗口。<br>
+F6	循环浏览窗口中或桌面上的屏幕元素。<br>
+F10	激活活动应用中的菜单栏。<br>
+Alt + F8	在登录屏幕上显示你的密码。<br>
+Alt + Esc	按项目打开顺序循环浏览。<br>
+Alt + 带下划线的字母	执行该字母相关的命令。<br>
+Alt + Enter	显示所选项目的属性。<br>
+Alt + 空格键	打开活动窗口的快捷菜单。<br>
+Alt + 向左键	返回。<br>
+Alt + 向右键	前进。<br>
+Alt + Page Up	向上移动一个屏幕。<br>
+Alt + Page Down	向下移动一个屏幕。<br>
+Ctrl + F4	关闭活动文档（在可全屏显示并允许你同时打开多个文档的应用中）。<br>
+Ctrl + A	选择文档或窗口中的所有项目。<br>
+Ctrl + D（或 Delete）	删除选定项，将其移至回收站。<br>
+Ctrl + R（或 F5）	刷新活动窗口。<br>
+Ctrl + Y	恢复操作。<br>
+Ctrl + 向右键	将光标移动到下一个字词的起始处。<br>
+Ctrl + 向左键	将光标移动到上一个字词的起始处。<br>
+Ctrl + 向下键	将光标移动到下一段落的起始处。<br>
+Ctrl + 向上键	将光标移动到上一段落的起始处。<br>
+Ctrl + Alt + Tab	使用箭头键在所有打开的应用之间进行切换。<br>
+Alt + Shift + 箭头键	当组或磁贴的焦点放在“开始”菜单上时，可将其朝指定方向移动。<br>
+Ctrl + Shift + 箭头键	当磁贴的焦点放在“开始”菜单上时，将其移到另一个磁贴即可创建一个文件夹。<br>
+Ctrl + 箭头键	打开“开始”菜单后调整其大小。<br>
+Ctrl + 箭头键（移至某个项目）+ 空格键	选择窗口中或桌面上的多个单独项目。<br>
+Ctrl + Shift（及箭头键）	选择文本块。<br>
+Ctrl + Esc	打开“开始”菜单。<br>
+Ctrl + Shift + Esc	打开任务管理器。<br>
+Ctrl + Shift	如果多种键盘布局可用，则可切换键盘布局。<br>
+Ctrl + 空格键	打开或关闭中文输入法编辑器 (IME)。<br>
+Shift + F10	显示选定项的快捷菜单。<br>
+按 Shift 与任何箭头键	在窗口中或桌面上选择多个项目，或在文档中选择文本。<br>
+Shift + Delete	删除选定项，无需先移动到回收站。<br>
+向右键	打开右侧的下一个菜单，或打开子菜单。<br>
+向左键	打开左侧的下一个菜单，或关闭子菜单。<br>
+Esc	停止或离开当前任务。<br>
+PrtScn	<br>
+捕获整个屏幕的屏幕截图并将其复制到剪贴板。</p>
+<p>注意</p>
+<p>你可以更改此快捷方式，以便它还可以打开屏幕截取，这允许你编辑屏幕截图。依次选择“开始”菜单  &gt;“设置” &gt;“轻松访问” &gt;“键盘”，然后打开“Print Screen 快捷方式”下的切换开关。<br>
+使用 PrtScn 键打开屏幕截取</p>
+<h2 id="windoorws微标键键盘快捷方式">Windoorws微标键键盘快捷方式</h2>
+<p>Windows 徽标键 	打开或关闭“开始”菜单。<br>
+Windows 徽标键  + A	打开操作中心。<br>
+Windows 徽标键  + B	将焦点设置到通知区域。<br>
+Windows 徽标键  + C	<br>
+在侦听模式下打开 Cortana。</p>
+<p>注意<br>
+此快捷方式默认情况下处于关闭状态。若要打开它，请选择“开始”菜单  &gt; “设置” &gt; “Cortana”，并打开“当我按 Windows 徽标键 + C 时，让 Cortana 听我的命令”下的切换开关。<br>
+Cortana 仅在某些国家/地区可用，并且某些 Cortana 功能可能无法随时随地使用。如果 Cortana 不可用或已关闭，你仍然可以使用搜索。<br>
+Windows 徽标键  + Shift + C	打开超级按钮菜单。<br>
+Windows 徽标键  + D	显示和隐藏桌面。<br>
+Windows 徽标键  + Alt + D	显示和隐藏桌面上的日期和时间。<br>
+Windows 徽标键  + E	打开文件资源管理器。<br>
+Windows 徽标键  + F	打开反馈中心并获取屏幕截图。<br>
+Windows 徽标键  + G	打开游戏栏（当游戏处于打开状态时）。<br>
+Windows 徽标键 ‌ + H	开始听写。<br>
+Windows 徽标键  + I	打开设置。<br>
+Windows 徽标键‌  + J</p>
+<p>将焦点设置到可用的 Windows 提示。</p>
+<p>当出现 Windows 提示时，请将焦点移到提示上。 再次按下键盘快捷方式，将焦点放在屏幕上 Windows 提示所固定的元素上。<br>
+Windows 徽标键  + K	打开“连接”快速操作.<br>
+Windows 徽标键  + L	锁定你的电脑或切换帐户。<br>
+Windows 徽标键  + M	最小化所有窗口。<br>
+Windows 徽标键  + O	锁定设备方向。<br>
+Windows 徽标键  + P	选择演示显示模式。<br>
+Windows 徽标键  + Ctrl + Q	打开快速助手。<br>
+Windows 徽标键  + R	打开“运行”对话框。<br>
+Windows 徽标键  + S	打开搜素。<br>
+Windows 徽标键  + Shift + S	获取部分屏幕的屏幕截图。<br>
+Windows 徽标键  + T	循环浏览任务栏上的应用。<br>
+Windows 徽标键  + U	打开轻松使用设置中心。<br>
+Windows 徽标键  + V	<br>
+打开剪贴板。</p>
+<p>注意</p>
+<p>若要激活此快捷方式，请依次选择“开始”菜单  &gt; “设置” &gt; “系统” &gt; “剪贴板”，然后打开“剪贴板历史记录”下的切换开关。<br>
+Windows 徽标键  + Shift + V	循环浏览通知。<br>
+Windows 徽标键  + X	打开“快速链接”菜单。<br>
+Windows 徽标键  + Y	在 Windows Mixed Reality 与桌面之间切换输入。<br>
+Windows 徽标键  + Z	以全屏模式显示应用中可用的命令。<br>
+Windows 徽标键  + 句点 (.) 或分号 (😉	打开表情符号面板。<br>
+Windows 徽标键  + 逗号 (,)	临时速览桌面。<br>
+Windows 徽标键  + Pause	显示“系统属性”对话框。<br>
+Windows 徽标键  + Ctrl + F	搜索电脑（如果已连接到网络）。<br>
+Windows 徽标键  + Shift + M	还原桌面上的最小化窗口。<br>
+Windows 徽标键  + 数字	打开桌面，然后启动固定到任务栏的应用（位于数字所指明的位置）。如果应用已处于运行状态，则切换至该应用。<br>
+Windows 徽标键  + Shift + 数字	打开桌面，然后启动固定到任务栏的应用新实例（位于数字所指明的位置）。<br>
+Windows 徽标键  + Ctrl + 数字	打开桌面，然后切换至固定到任务栏的应用的最后活动窗口（位于数字所指明的位置）。<br>
+Windows 徽标键  + Alt + 数字	打开桌面，然后打开固定到任务栏的应用的“跳转列表”（位于数字所指明的位置）。<br>
+Windows 徽标键  + Ctrl + Shift + 数字	打开桌面，然后以管理员身份打开位于任务栏上指定位置的应用新实例。<br>
+Windows 徽标键  + Tab	打开任务视图。<br>
+Windows 徽标键  + 向上键	最大化窗口。<br>
+Windows 徽标键  + 向下键	删除屏幕上的当前应用并最小化桌面窗口。<br>
+Windows 徽标键  + 向左键	最大化屏幕左侧的应用或桌面窗口。<br>
+Windows 徽标键  + 向右键	最大化屏幕右侧的应用或桌面窗口。<br>
+Windows 徽标键  + Home	最小化活动桌面窗口之外的所有窗口（在第二个笔划时还原所有窗口）。<br>
+Windows 徽标键  + Shift + 向上键	将桌面窗口拉伸至屏幕顶部和底部。<br>
+Windows 徽标键  + Shift + 向下键	在垂直方向上还原/最小化活动桌面窗口，而宽度保持不变。<br>
+Windows 徽标键  + Shift + 向左键或向右键	将桌面上的应用或窗口从一台显示器移动至另一台显示器。<br>
+Windows 徽标键  + 空格键	切换输入语言和键盘布局。<br>
+Windows 徽标键  + Ctrl + 空格键	对之前选择的输入所做的更改。<br>
+Windows 徽标键  + Ctrl + Enter	打开“讲述人”。<br>
+Windows 徽标键 + 加号 (+)	打开“放大镜”。<br>
+Windows 徽标键  + 正斜杠 (/)	开始输入法复原流程。<br>
+Windows 徽标键  + Ctrl + V	打开肩式分接设备。<br>
+Windows 徽标键‌  + Ctrl + Shift + B	从空白屏幕或黑屏中唤醒</p>
+<h2 id="命令提示符键盘快捷方式">命令提示符键盘快捷方式</h2>
+<p>Ctrl + C（或 Ctrl + Insert）	复制选定文本。<br>
+Ctrl + V（或 Shift + Insert）	粘贴选定文本。<br>
+Ctrl + M	进入标记模式。<br>
+Alt + 所选择的键	开始在块模式下选择。<br>
+箭头键	按指定方向移动光标。<br>
+Page Up	将光标向上移动一个页面。<br>
+Page Down	将光标向下移动一个页面。<br>
+Ctrl + Home（标记模式）	将光标移动到缓冲区的起始处。<br>
+Ctrl + End（标记模式）	将光标移动到缓冲区的结尾处。<br>
+Ctrl + 向上键	在输出历史记录中上移一行。<br>
+Ctrl + 向下键	在输出历史记录中下移一行。<br>
+Ctrl + Home（历史记录导航）	如果命令行为空，则将视区移动到缓冲区顶部。否则，请删除命令行中光标左侧的所有字符。<br>
+Ctrl + End（历史记录导航）	如果命令行为空，则将视区移动到命令行。否则，请删除命令行中光标右侧的所有字符。<br>
+对话框键盘快捷方式<br>
+按该键	执行以下操作<br>
+F4	显示活动列表中的项目。<br>
+Ctrl + Tab	在选项卡中向前移动。<br>
+Ctrl + Shift + Tab	在选项卡中向后移动。<br>
+Ctrl + 数字（数字 1–9）	移动到第 n 个选项卡。<br>
+Tab	在选项中向前移动。<br>
+Shift + Tab	在选项中向后移动。<br>
+Alt + 带下划线的字母	执行可与该字母结合使用的命令（或选择该选项）。<br>
+空格键	如果活动选项为复选框，则选择或清除复选框。<br>
+Backspace	如果在“另存为”或“打开”对话框中选择文件夹，则打开上一级别的文件夹。<br>
+箭头键	如果活动选项是一组选项按钮，请选择一个按钮。</p>
+<h2 id="文件资源管理器键盘快捷方式">文件资源管理器键盘快捷方式</h2>
+<p>Alt + D	选择地址栏。<br>
+Ctrl + E	选择搜索框。<br>
+Ctrl + F	选择搜索框。<br>
+Ctrl + N	打开新窗口。<br>
+Ctrl + W	关闭活动窗口。<br>
+Ctrl + 鼠标滚轮	更改文件和文件夹图标的大小和外观。<br>
+Ctrl + Shift + E	显示选定文件夹上的所有文件夹。<br>
+Ctrl + Shift + N	创建新文件夹。<br>
+Num Lock + 星号 (*)	显示选定文件夹下的所有子文件夹。<br>
+Num Lock + 加号 (+)	显示选定文件夹中的内容。<br>
+Num Lock + 减号 (-)	折叠选定文件夹。<br>
+Alt + P	显示预览面板。<br>
+Alt + Enter	打开选定项的“属性”对话框。<br>
+Alt + 向右键	查看下一个文件夹。<br>
+Alt + 向上键	查看该文件夹所在的文件夹。<br>
+Alt + 向左键	查看上一个文件夹。<br>
+Backspace	查看上一个文件夹。<br>
+向右键	显示当前选择内容（如果已折叠），或选择第一个子文件夹。<br>
+向左键	折叠当前选择内容（如果已展开），或选择该文件夹所在的文件夹。<br>
+End	显示活动窗口底部。<br>
+Home	显示活动窗口顶部。<br>
+F11	最大化或最小化活动窗口。</p>
+<h2 id="虚拟桌面键盘快捷方式">虚拟桌面键盘快捷方式</h2>
+<p>Windows 徽标键  + Tab	打开任务视图。<br>
+Windows 徽标键  + Ctrl + D	添加虚拟桌面。<br>
+Windows 徽标键  + Ctrl + 向右键	在你于右侧创建的虚拟桌面之间切换。<br>
+Windows 徽标键  + Ctrl + 向左键	在你于左侧创建的虚拟桌面之间切换。<br>
+Windows 徽标键  + Ctrl + F4	关闭你正在使用的虚拟桌面。</p>
+<h2 id="任务栏键盘快捷方式">任务栏键盘快捷方式</h2>
+<p>Shift + 单击任务栏按钮	打开应用或快速打开另一个应用实例。<br>
+Ctrl + Shift + 单击任务栏按钮	以管理员身份打开应用。<br>
+Shift + 右键单击任务栏按钮	显示应用的窗口菜单。<br>
+Shift + 右键单击分组任务栏按钮	显示组的窗口菜单。<br>
+Ctrl + 单击分组任务栏按钮	循环浏览组的窗口。</p>
+<h2 id="设置键盘快捷方式">设置键盘快捷方式</h2>
+<p>Windows 徽标键  + I	打开设置。<br>
+Backspace	返回到设置主页。<br>
+使用搜索框在任何页面上键入	搜索设置。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="复制-粘贴及其他常规的键盘快捷方式">复制、粘贴及其他常规的键盘快捷方式</h2>
 <p>Ctrl + X	剪切选定项。<br>
 Ctrl + C（或 Ctrl + Insert）	复制选定项。<br>
 Ctrl + V（或 Shift + Insert）	粘贴选定项。<br>
@@ -540,73 +1200,6 @@ Backspace	返回到设置主页。<br>
         </link>
         <updated>2020-02-13T05:18:58.000Z</updated>
         <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://carlwang3.github.io/post-images/1591280079177.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[HTML 基础：创建一个输入框]]></title>
-        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-shu-ru-kuang/</id>
-        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-shu-ru-kuang/">
-        </link>
-        <updated>2020-02-01T01:47:59.000Z</updated>
-        <content type="html"><![CDATA[<p>创建一个form表单。</p>
-<p>input输入框可以让你轻松获得用户的输入。</p>
-<p>你可以像这样创建一个文本输入框：</p>
-<p><code>&lt;input type=&quot;text&quot;&gt;</code></p>
-<p>注意：input输入框是没有结束标记的。</p>
-<p>创建一个type属性为text的input输入框<br>
-<code>&lt;input type=&quot;text&quot;&gt;</code></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[HTML 基础：创建一个有序列表]]></title>
-        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-you-xu-lie-biao/</id>
-        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-you-xu-lie-biao/">
-        </link>
-        <updated>2020-02-01T01:40:08.000Z</updated>
-        <content type="html"><![CDATA[<p>HTML 有一个特定的元素用于创建有序列表ordered lists（缩写 ol）。</p>
-<p>有序列表以<code>&lt;ol&gt;</code>开始，中间包含一个或多个<code>&lt;li&gt;</code>元素，最后以<code>&lt;/ol&gt;</code>结尾。</p>
-<p>例如:</p>
-<p><code>&lt;ol&gt;</code><br>
-<code>&lt;li&gt;加菲猫&lt;/li&gt;</code><br>
-<code>&lt;li&gt;哆啦A梦&lt;/li&gt;</code><br>
-<code>&lt;/ol&gt;</code><br>
-将会创建一个包含加菲猫和哆啦A梦的有序列表。<br>
-eg:</p>
-<ol>
-  <li>加菲猫</li>
-  <li>哆啦A梦</li>
-</ol>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[HTML 基础：创建一个无序列表]]></title>
-        <id>https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-wu-xu-lie-biao/</id>
-        <link href="https://carlwang3.github.io/post/html-ji-chu-chuang-jian-yi-ge-wu-xu-lie-biao/">
-        </link>
-        <updated>2020-02-01T01:31:49.000Z</updated>
-        <content type="html"><![CDATA[<p>HTML 有一个特定的元素用于创建无序列表unordered lists（缩写 ul）。</p>
-<p>无序列表以<code>&lt;ul&gt;</code>开始，中间包含一个或多个<code>&lt;li&gt;</code>元素，最后以<code>&lt;/ul&gt;</code>结尾。</p>
-<p>例如:</p>
-<p><code>&lt;ul&gt;</code><br>
-<code>&lt;li&gt;牛奶&lt;/li&gt;</code><br>
-<code>&lt;li&gt;奶酪&lt;/li&gt;</code><br>
-<code>&lt;/ul&gt;</code><br>
-将会创建一个包含牛奶和奶酪的无序列表。<br>
-eg:<ul></p>
-  <li>牛奶</li>
-  <li>奶酪</li>
-</ul>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[HTML 基础：给图片添加链接]]></title>
-        <id>https://carlwang3.github.io/post/html-ji-chu-gei-tu-pian-tian-jia-lian-jie/</id>
-        <link href="https://carlwang3.github.io/post/html-ji-chu-gei-tu-pian-tian-jia-lian-jie/">
-        </link>
-        <updated>2020-01-31T14:33:14.000Z</updated>
-        <content type="html"><![CDATA[<p>你可以通过把元素嵌套进锚点里使其变成一个链接。</p>
-<p>把你的图片嵌套进锚点。举例如下：</p>
-<p><a href="#"><img src="xxx.jpg" alt="图片不见了"></a></p>
-<p>把锚点的href属性设置为#，就可以创建固定链接。</p>
-<p>当鼠标悬停在图片上时，鼠标的光标如果从箭头指针变成手形指针，那么此时图片就是一个链接了。</p>
 ]]></content>
     </entry>
 </feed>
